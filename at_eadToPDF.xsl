@@ -102,9 +102,9 @@
     <xsl:output method="xml" encoding="utf-8" indent="yes"/>
     <xsl:strip-space elements="*"/>
     <!-- Path for lookup if transforming outside AT -->
-    <xsl:include href="lookupListsPDF.xsl"/>
+    <!--xsl:include href="lookupListsPDF.xsl"/-->
     <!-- Path for lookup is transforming inside AT -->
-    <!--xsl:include href="reports/Resources/eadToPdf/lookupListsPDF.xsl"/-->
+    <xsl:include href="reports/Resources/eadToPdf/lookupListsPDF.xsl"/>
     <xsl:template match="/">
         <xsl:apply-templates/>
     </xsl:template>
