@@ -102,9 +102,9 @@
     <xsl:output method="xml" encoding="utf-8" indent="yes"/>
     <xsl:strip-space elements="*"/>
     <!-- Path for lookup if transforming outside AT -->
-    <!--<xsl:include href="lookupListsPDF.xsl"/>-->
+    <xsl:include href="lookupListsPDF.xsl"/>
     <!-- Path for lookup is transforming inside AT -->
-    <xsl:include href="reports/Resources/eadToPdf/lookupListsPDF.xsl"/>
+    <!--xsl:include href="reports/Resources/eadToPdf/lookupListsPDF.xsl"/-->
     <xsl:template match="/">
         <xsl:apply-templates/>
     </xsl:template>
@@ -1861,18 +1861,22 @@
         <xsl:apply-templates/>
     </xsl:template>
     <!-- Formats -->
-    <xsl:template match="ead:unittitle">
+    <xsl:template match="ead:unittitle">    
         <xsl:choose>
             <xsl:when test="child::ead:unitdate[@type='bulk']">
                 <xsl:apply-templates select="node()[not(self::ead:unitdate[@type='bulk'])]"/>
                 <xsl:apply-templates select="ead:date[@type='bulk']"/>
+            </xsl:when>
+            <xsl:when test="ead:extref">                                       
+                <fo:basic-link external-destination="url('{ead:extref/@ns2:href}')" color="blue" text-decoration="underline">
+                    <xsl:value-of select="normalize-space(ead:extref)"/>
+                </fo:basic-link>
             </xsl:when>
             <xsl:otherwise>
                 <xsl:apply-templates/>
             </xsl:otherwise>
         </xsl:choose>
     </xsl:template>
-
     <!-- Following five templates output chronlist and children in a table -->
     <xsl:template match="ead:chronlist">
         <fo:table table-layout="fixed" width="100%" space-before="36pt" font-size="12pt"
@@ -2666,6 +2670,7 @@
             </xsl:when>
             <!--This code process the elements when unitdate is not a child of untititle-->
             <xsl:otherwise>
+                <!-- ENTRY POINT -->
                 <xsl:apply-templates select="ead:unittitle"/>
                 <xsl:if test="ead:unittitle/text() or ead:unittitle/ead:title/text()">
                    <xsl:if test="ead:unitdate">
@@ -2675,6 +2680,8 @@
                 </xsl:if>
                 <!--RP changed this from &#160; to a comma with a space to separate unit title from unit date a little more -->
                 <xsl:for-each select="ead:unitdate[not(self::ead:unitdate[@type='bulk'])]">
+                    <!-- Add space following link -->
+                    <xsl:if test="preceding::ead:extref"><xsl:text>&#160;</xsl:text></xsl:if>
                     <xsl:apply-templates/>
                     <xsl:text>&#160;</xsl:text>
                 </xsl:for-each>
