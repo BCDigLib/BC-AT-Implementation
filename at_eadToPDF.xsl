@@ -1861,7 +1861,7 @@
         <xsl:apply-templates/>
     </xsl:template>
     <!-- Formats -->
-    <xsl:template match="ead:unittitle">    
+    <xsl:template match="ead:unittitle">   
         <xsl:choose>
             <xsl:when test="child::ead:unitdate[@type='bulk']">
                 <xsl:apply-templates select="node()[not(self::ead:unitdate[@type='bulk'])]"/>
@@ -2290,10 +2290,17 @@
     </xsl:template>
     <xsl:template match="*[@render = 'doublequote'] | *[@altrender = 'doublequote']">
         <xsl:if test="preceding-sibling::*"> &#160;</xsl:if>"<xsl:apply-templates/>" </xsl:template>
-    <xsl:template match="*[@render = 'italic'] | *[@altrender = 'italic']">
+    <xsl:template match="*[@render = 'italic'] | *[@altrender = 'italic']">   
         <fo:inline font-style="italic">
-            <xsl:if test="preceding-sibling::*"> &#160;</xsl:if>
-            <xsl:apply-templates/>
+            <xsl:if test="preceding-sibling::*"> &#160;</xsl:if>           
+            <xsl:choose>
+                <xsl:when test="string-length(..) = string-length(.)">
+                    <xsl:value-of select="concat(.,', ')"/>
+                </xsl:when>
+                <xsl:otherwise>
+                    <xsl:apply-templates/>
+                </xsl:otherwise>
+            </xsl:choose>
         </fo:inline>
     </xsl:template>
     <xsl:template match="*[@render = 'singlequote'] | *[@altrender = 'singlequote']">
@@ -2670,7 +2677,6 @@
             </xsl:when>
             <!--This code process the elements when unitdate is not a child of untititle-->
             <xsl:otherwise>
-                <!-- ENTRY POINT -->
                 <xsl:apply-templates select="ead:unittitle"/>
                 <xsl:if test="ead:unittitle/text() or ead:unittitle/ead:title/text()">
                    <xsl:if test="ead:unitdate">
