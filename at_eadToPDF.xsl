@@ -267,9 +267,9 @@
                         </fo:table-body>
                     </fo:table>
                 </fo:static-content>
-                <!--fo:flow flow-name="xsl-region-body" font-family="Times New Roman">
-                    <xsl:apply-templates select="ead:archdesc"/>
-                </fo:flow-->
+
+
+
                 <fo:flow flow-name="xsl-region-body" font-family="Times New Roman">
                     <xsl:apply-templates select="ead:archdesc"/>
                 </fo:flow>
@@ -2660,19 +2660,10 @@
     </xsl:template>
     <xsl:template name="component-did-core">
         <!--Inserts unitid and a space if it exists in the markup.-->
-        <!-- Skip unitid if dao link is present -->
-        <xsl:choose>
-            <xsl:when test="../ead:dao"/>
-            <xsl:otherwise>
-                <xsl:choose>
-                    <xsl:when test="ead:unitid">
-                        <xsl:apply-templates select="ead:unitid"/>
-                        <xsl:text>: &#160;</xsl:text>  
-                    </xsl:when>
-                    <xsl:otherwise/>
-                </xsl:choose>            
-            </xsl:otherwise>
-        </xsl:choose>
+        <xsl:if test="ead:unitid">
+            <xsl:apply-templates select="ead:unitid"/>
+            <xsl:text>: &#160;</xsl:text>
+        </xsl:if>
         <!--Inserts origination and a space if it exists in the markup.-->
         <xsl:if test="ead:origination">
             <xsl:apply-templates select="ead:origination"/>
@@ -2683,12 +2674,6 @@
             <!--This code processes the elements when unitdate is a child of unittitle.-->
             <xsl:when test="ead:unittitle/ead:unitdate">
                 <xsl:apply-templates select="ead:unittitle"/>
-            </xsl:when>
-            <!-- Skip unittitle if link present. Use daodesc for title -->
-            <xsl:when test="../ead:dao">AAA<xsl:copy-of select="../ead:dao"/>BBB
-                <fo:basic-link external-destination="url('{../ead:dao[@ns2:href]}')" text-decoration="underline" color="blue">
-                    <xsl:value-of select="@ns2:href"/>
-                </fo:basic-link>
             </xsl:when>
             <!--This code process the elements when unitdate is not a child of untititle-->
             <xsl:otherwise>
@@ -2707,7 +2692,7 @@
                     <xsl:text>&#160;</xsl:text>
                 </xsl:for-each>
                 <xsl:for-each select="ead:unitdate[@type = 'bulk']"> (<xsl:apply-templates/>)
-                </xsl:for-each>                
+                </xsl:for-each>
             </xsl:otherwise>
         </xsl:choose>
         <xsl:if test="ead:physdesc">
