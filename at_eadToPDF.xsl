@@ -1139,13 +1139,18 @@
         <fo:block font-size="12pt" space-before="18pt" space-after="8pt" margin-left="-4pt"
             font-weight="bold" color="#111">Last Update</fo:block>
         <fo:block>
-            <!-- <xsl:if test="ead:change/ead:item">
-            RP We don't ever want the revision description to show.  We only want the date! 
-           <xsl:apply-templates select="ead:change/ead:item"/></xsl:if> 
-           </xsl:if> -->
-            <xsl:if test="ead:change/ead:date">
+            
+           <xsl:if test="ead:change/ead:date">
                 <xsl:apply-templates select="ead:change/ead:date"/>
             </xsl:if>
+            <xsl:if test="(ead:change/ead:date) and (ead:change/ead:item)">
+                <xsl:text>.  </xsl:text>
+            </xsl:if>
+            <xsl:if test="ead:change/ead:item">
+                <xsl:apply-templates select="ead:change/ead:item"/>
+            </xsl:if> 
+           
+
         </fo:block>
     </xsl:template>
 
