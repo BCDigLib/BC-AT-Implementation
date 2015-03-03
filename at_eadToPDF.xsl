@@ -2300,7 +2300,7 @@
             <xsl:if test="preceding-sibling::*"> &#160;</xsl:if>           
             <xsl:choose>
                 <xsl:when test="string-length(..) = string-length(.)">
-                    <xsl:value-of select="concat(.,', ')"/>
+                    <xsl:value-of select="."/>
                 </xsl:when>
                 <xsl:otherwise>
                     <xsl:apply-templates/>
