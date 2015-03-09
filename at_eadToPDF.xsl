@@ -1794,20 +1794,21 @@
     <!-- Check for embedded link and process -->
     <xsl:template match="ead:p">   
         <fo:block margin-bottom="8pt">
-            <xsl:choose>
-                <xsl:when test="ead:extref">
-                    <!-- URL might be embedded in string, so use href attribute to parse text -->                    
+           <!-- <xsl:choose>
+                <xsl:when test="ead:extref">-->
+                    <!-- URL might be embedded in string, so use href attribute to parse text                 
                     <xsl:variable name="varHref"><xsl:value-of select="ead:extref[@ns2:href]"/></xsl:variable>
                     <xsl:value-of select="substring-before(.,$varHref)"/>                                       
-                    <fo:basic-link external-destination="url('{ead:extref[@ns2:href]}')" color="blue" text-decoration="underline">
+                    <fo:basic-link external-destination="url('{ead:extref[@ns2:href]}')" coloRr="blue" text-decoration="underline">
                         <xsl:value-of select="ead:extref[@ns2:href]"/>
                     </fo:basic-link>
                     <xsl:value-of select="substring-after(.,$varHref)"/>
                 </xsl:when>
-                <xsl:otherwise>                  
+                <xsl:otherwise>              
                     <xsl:apply-templates/>
                 </xsl:otherwise>
-            </xsl:choose>  
+                </xsl:choose>  -->    
+            <xsl:apply-templates/>
         </fo:block>            
     </xsl:template>
 
@@ -2259,7 +2260,14 @@
             <xsl:apply-templates/>
         </fo:inline>
     </xsl:template>
-
+    <!--href template-->
+    <xsl:template match="ead:extref">
+                                        
+        <fo:basic-link external-destination="url('{self::node()[@ns2:href]}')" color="blue" text-decoration="underline">
+            <xsl:value-of select="self::node()[@ns2:href]"/>
+        </fo:basic-link>
+       
+    </xsl:template>
     <!--Render elements -->
     <xsl:template match="*[@render = 'bold'] | *[@altrender = 'bold'] ">
         <fo:inline font-weight="bold">
