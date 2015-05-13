@@ -1746,10 +1746,21 @@
         </xsl:choose>
     </xsl:template>
     <xsl:template match="ead:head">
-        <fo:block font-size="12pt" space-before="18pt" space-after="8pt" margin-left="-4pt"
-            font-weight="bold" color="#111">
-            <xsl:apply-templates/>
-        </fo:block>
+        <!--201500513 edited to handle stuff at item/folder level-->
+        <xsl:choose>
+            <xsl:when test="ancestor::*[2]/@level='file' or ancestor::*[2]/@level='item'">
+                <fo:block font-size="10pt" space-before="0pt" space-after="0pt" margin-left=".5in"
+                    font-weight="bold" color="#111">
+                    <xsl:apply-templates/>
+                </fo:block>
+            </xsl:when>
+            <xsl:otherwise>
+                <fo:block font-size="12pt" space-before="18pt" space-after="8pt" margin-left="-4pt"
+                    font-weight="bold" color="#111">
+                    <xsl:apply-templates/>
+                </fo:block>            
+            </xsl:otherwise>
+       </xsl:choose>
     </xsl:template>
 
     <!--Bibref, choose statement decides if the citation is inline, if there is a parent element
@@ -1793,6 +1804,15 @@
 
     <!-- Check for embedded link and process -->
     <xsl:template match="ead:p">   
+        <!--201500513 edited to handle stuff at item/folder level-->
+        <xsl:choose>
+            <xsl:when test="ancestor::*[2]/@level='file' or ancestor::*[2]/@level='item'">
+                <fo:block font-size="10pt" space-before="0pt" space-after="0pt" margin-left=".5in"
+                    color="#111">
+                    <xsl:apply-templates/>
+                </fo:block>
+            </xsl:when>
+            <xsl:otherwise>
         <fo:block margin-bottom="8pt">
            <!-- <xsl:choose>
                 <xsl:when test="ead:extref">-->
@@ -1809,7 +1829,9 @@
                 </xsl:otherwise>
                 </xsl:choose>  -->    
             <xsl:apply-templates/>
-        </fo:block>            
+        </fo:block>    
+            </xsl:otherwise>
+        </xsl:choose>    
     </xsl:template>
 
     <!--Formats a simple table. The width of each column is defined by the colwidth attribute in a colspec element.-->
@@ -2307,14 +2329,14 @@
         <fo:inline font-style="italic">
             <!--Commented out the line adding a space between preceding siblings.  It was causing
                 extra spaces to be added in the scope and contents note for series 11 of BC.1988.031-->
-            <!--<xsl:if test="preceding-sibling::*"> &#160;</xsl:if>   -->        
+            <xsl:if test="preceding-sibling::*"> &#160;</xsl:if>        
             <xsl:choose>
                 <xsl:when test="string-length(..) = string-length(.)">
                     <xsl:value-of select="."/>
                 </xsl:when>
                 <xsl:otherwise>
                     <xsl:apply-templates/>
-                </xsl:otherwise>
+               </xsl:otherwise>
             </xsl:choose>
         </fo:inline>
     </xsl:template>
