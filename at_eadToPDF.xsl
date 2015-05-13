@@ -2329,7 +2329,7 @@
         <fo:inline font-style="italic">
             <!--Commented out the line adding a space between preceding siblings.  It was causing
                 extra spaces to be added in the scope and contents note for series 11 of BC.1988.031-->
-            <xsl:if test="preceding-sibling::*"> &#160;</xsl:if>        
+           <!-- <xsl:if test="preceding-sibling::*"> &#160;</xsl:if>    -->    
             <xsl:choose>
                 <xsl:when test="string-length(..) = string-length(.)">
                     <xsl:value-of select="."/>
