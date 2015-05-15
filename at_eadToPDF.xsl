@@ -2328,7 +2328,7 @@
     <xsl:template match="*[@render = 'italic'] | *[@altrender = 'italic']">   
         <fo:inline font-style="italic">
        
-        <xsl:if test="preceding-sibling::*">&#160;</xsl:if>     
+       <xsl:if test="preceding-sibling::*">&#160;</xsl:if>     
             <xsl:choose>
                 <xsl:when test="string-length(..) = string-length(.)">
                     <xsl:value-of select="."/>
