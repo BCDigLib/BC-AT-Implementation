@@ -1749,7 +1749,7 @@
         <!--201500513 edited to handle stuff at item/folder level-->
         <xsl:choose>
             <xsl:when test="ancestor::*[2]/@level='file' or ancestor::*[2]/@level='item'">
-                <fo:block font-size="10pt" space-before="0pt" space-after="0pt" margin-left=".5in"
+                <fo:block font-size="10pt" space-before="0pt" space-after="0pt" margin-left="1.0in"
                     font-weight="bold" color="#111">
                     <xsl:apply-templates/>
                 </fo:block>
@@ -1807,7 +1807,7 @@
         <!--201500513 edited to handle stuff at item/folder level-->
         <xsl:choose>
             <xsl:when test="ancestor::*[2]/@level='file' or ancestor::*[2]/@level='item'">
-                <fo:block font-size="10pt" space-before="0pt" space-after="0pt" margin-left=".5in"
+                <fo:block font-size="10pt" space-before="0pt" space-after="0pt" margin-left="1.0in"
                     color="#111">
                     <xsl:apply-templates/>
                 </fo:block>
@@ -2327,9 +2327,8 @@
         <xsl:if test="preceding-sibling::*"> &#160;</xsl:if>"<xsl:apply-templates/>" </xsl:template>
     <xsl:template match="*[@render = 'italic'] | *[@altrender = 'italic']">   
         <fo:inline font-style="italic">
-            <!--Commented out the line adding a space between preceding siblings.  It was causing
-                extra spaces to be added in the scope and contents note for series 11 of BC.1988.031-->
-           <!-- <xsl:if test="preceding-sibling::*"> &#160;</xsl:if>    -->    
+       
+        <xsl:if test="preceding-sibling::*">&#160;</xsl:if>     
             <xsl:choose>
                 <xsl:when test="string-length(..) = string-length(.)">
                     <xsl:value-of select="."/>
