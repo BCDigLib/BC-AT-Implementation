@@ -2801,7 +2801,7 @@
     </xsl:template>
     <xsl:template name="component-did-core">
         <!--Inserts unitid and a space if it exists in the markup.-->
-        <xsl:if test="ead:unitid">
+        <xsl:if test="(ead:unitid) and (not(ead:container[@*]))">
             <xsl:apply-templates select="ead:unitid"/>
             <xsl:text>: &#160;</xsl:text>
         </xsl:if>
