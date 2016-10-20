@@ -155,7 +155,6 @@
             page types, the cover page, the table of contents, contents and the container list. To alter basic page apperence 
             such as margins fonts alter the following page-masters.-->
         <fo:root xmlns:fo="http://www.w3.org/1999/XSL/Format">
-           
 
             <!--xxxxPageLayoutxxxx -->
 
@@ -195,112 +194,8 @@
                     <fo:region-after extent="0.2in"/>
                 </fo:simple-page-master>
             </fo:layout-master-set>
-            
-            <!--Adding PDF document properties -->
-            <fo:declarations>
-                <x:xmpmeta xmlns:x="adobe:ns:meta/">
-                    <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
-                        <rdf:Description rdf:about=""
-                            xmlns:dc="http://purl.org/dc/elements/1.1/">
-                            <!-- Dublin Core properties go here -->
-                            <dc:title>
-                                <xsl:choose>
-                                    <xsl:when test="ead:filedesc/ead:titlestmt/ead:titleproper">
-                                        <xsl:choose>
-                                            <xsl:when
-                                                test="starts-with(ead:filedesc/ead:titlestmt/ead:titleproper,ead:filedesc/ead:titlestmt/ead:titleproper/ead:num)">
-                                                <xsl:apply-templates
-                                                    select="/ead:ead/ead:archdesc/ead:did/ead:unittitle"
-                                                    mode="header"/>
-                                            </xsl:when>
-                                            <xsl:when
-                                                test="ead:filedesc/ead:titlestmt/ead:titleproper/@type = 'filing'">
-                                                <xsl:choose>
-                                                    <xsl:when
-                                                        test="count(ead:filedesc/ead:titlestmt/ead:titleproper) &gt; 1">
-                                                        <xsl:apply-templates
-                                                            select="ead:filedesc/ead:titlestmt/ead:titleproper[not(@type='filing')]"
-                                                        />
-                                                    </xsl:when>
-                                                    <xsl:otherwise>
-                                                        <xsl:apply-templates
-                                                            select="/ead:ead/ead:archdesc/ead:did/ead:unittitle"
-                                                            mode="header"/>
-                                                    </xsl:otherwise>
-                                                </xsl:choose>
-                                            </xsl:when>
-                                            <!-- RP added "/text()" to the line directly below to remove the /num attribute -->
-                                            <xsl:otherwise>
-                                                <xsl:apply-templates
-                                                    select="ead:filedesc/ead:titlestmt/ead:titleproper/text()"/>
-                                            </xsl:otherwise>
-                                        </xsl:choose>
-                                    </xsl:when>
-                                    <xsl:otherwise>
-                                        <xsl:apply-templates select="/ead:ead/ead:archdesc/ead:did/ead:unittitle"
-                                            mode="header"/>
-                                    </xsl:otherwise>
-                                </xsl:choose>
-                            </dc:title>
-                            <dc:creator>John J. Burns Library Boston College</dc:creator>
-                            <dc:description>
-                                <xsl:value-of select="/ead:ead/ead:archdesc/ead:did/ead:abstract"/>
-                            </dc:description>
-                            <!--SUBJECTS-->
-                            <dc:subject>    
-                                <xsl:for-each select="/ead:ead/ead:archdesc/ead:did/ead:origination/ead:persname">
-                                    
-                                    <xsl:choose>
-                                        <xsl:when test="(contains(substring-after(.,','),','))">
-                                            <xsl:value-of select="concat(substring-before(substring-after(.,','),','),' ',substring-before(.,','))"/>
-                                            <xsl:text>;</xsl:text>
-                                        </xsl:when>
-                                        <xsl:otherwise>
-                                            <xsl:value-of select="concat(substring-after(.,','),' ',substring-before(.,','))"/>
-                                            <xsl:text>;</xsl:text>
-                                        </xsl:otherwise>
-                                    </xsl:choose>             
-                                    
-                                </xsl:for-each>
-                                <xsl:for-each select="/ead:ead/ead:archdesc/ead:controlaccess/ead:persname">
-                             
-                                    <xsl:choose>
-                                        <xsl:when test="(contains(substring-after(.,','),','))">
-                                            <xsl:value-of select="concat(substring-before(substring-after(.,','),','),' ',substring-before(.,','))"/>
-                                            <xsl:text>;</xsl:text>
-                                        </xsl:when>
-                                        <xsl:otherwise>
-                                            <xsl:value-of select="concat(substring-after(.,','),' ',substring-before(.,','))"/>
-                                            <xsl:text>;</xsl:text>
-                                        </xsl:otherwise>
-                                    </xsl:choose>             
-                               
-                                </xsl:for-each>
-                                
-                                <xsl:for-each select="/ead:ead/ead:archdesc/ead:controlaccess/ead:corpname |/ead:ead/ead:archdesc/ead:controlaccess/ead:geogname|/ead:ead/ead:archdesc/ead:controlaccess/ead:subject |/ead:ead/ead:archdesc/ead:controlaccess/ead:genreform | /ead:ead/ead:archdesc/ead:did/ead:origination/ead:corpname">
-                                  
-                                    <xsl:choose>
-                                        <xsl:when test="contains(.,'--')">
-                                            <xsl:value-of select="translate(substring-before(node(),'--'),',','')"/>
-                                            <xsl:if test="position()!=last()"><xsl:text>;</xsl:text></xsl:if>
-                                        </xsl:when>
-                                        <xsl:otherwise>                                       
-                                            <xsl:value-of select="translate(node(),',','')"/>
-                                            <xsl:if test="position()!=last()"><xsl:text>;</xsl:text></xsl:if>
-                                                
-                                        </xsl:otherwise>
-                                    </xsl:choose>
-                                    
-                                </xsl:for-each>
-                                </dc:subject>
-                                   
-                        </rdf:Description>
-                      
-                    </rdf:RDF>
-                </x:xmpmeta>
-            </fo:declarations>
             <!-- The fo:page-sequence establishes headers, footers and the body of the page.-->
-                        <fo:page-sequence master-reference="cover-page">
+            <fo:page-sequence master-reference="cover-page">
                 <fo:static-content flow-name="xsl-region-after">
                     <fo:block text-align="center" font-size="12pt">
                         <xsl:apply-templates
